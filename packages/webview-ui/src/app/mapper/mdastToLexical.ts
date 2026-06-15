@@ -18,14 +18,16 @@ import {
   $createToggleContainerNode,
   $createToggleTitleNode,
   $createToggleContentNode,
+  $createFrontmatterNode,
   HorizontalRuleNode,
   ImageNode,
   CalloutNode,
   ToggleContainerNode,
+  FrontmatterNode,
   CalloutType,
 } from '../editor/nodes';
 import { $createTableNode, $createTableRowNode, $createTableCellNode, TableNode, TableRowNode, TableCellNode, TableCellHeaderStates } from '@lexical/table';
-import type { Root, Content, PhrasingContent, List, ListItem, Table, TableRow, TableCell, Heading, Paragraph, Blockquote, Code, ThematicBreak, Image, Link, Text, Strong, Emphasis, InlineCode, Delete, Html } from 'mdast';
+import type { Root, Content, PhrasingContent, List, ListItem, Table, TableRow, TableCell, Heading, Paragraph, Blockquote, Code, ThematicBreak, Image, Link, Text, Strong, Emphasis, InlineCode, Delete, Html, Yaml } from 'mdast';
 import DOMPurify from 'dompurify';
 
 type LexicalBlockNode =
@@ -38,6 +40,7 @@ type LexicalBlockNode =
   | ImageNode
   | CalloutNode
   | ToggleContainerNode
+  | FrontmatterNode
   | TableNode;
 
 // Convert mdast tree to Lexical editor state
@@ -172,6 +175,8 @@ function convertBlockNode(node: Content): LexicalBlockNode[] {
       return [convertList(node)];
     case 'code':
       return [convertCode(node)];
+    case 'yaml':
+      return [convertFrontmatter(node)];
     case 'thematicBreak':
       return [convertThematicBreak()];
     case 'table':
@@ -355,6 +360,10 @@ function convertCode(node: Code): CodeNode {
   const code = $createCodeNode(node.lang || undefined);
   code.append($createTextNode(node.value));
   return code;
+}
+
+function convertFrontmatter(node: Yaml): FrontmatterNode {
+  return $createFrontmatterNode(node.value);
 }
 
 function convertThematicBreak(): HorizontalRuleNode {

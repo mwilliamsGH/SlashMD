@@ -19,11 +19,13 @@ import {
   $isToggleContainerNode,
   $isToggleTitleNode,
   $isToggleContentNode,
+  $isFrontmatterNode,
   ImageNode,
   CalloutNode,
   ToggleContainerNode,
   ToggleTitleNode,
   ToggleContentNode,
+  FrontmatterNode,
 } from '../editor/nodes';
 import type {
   Root,
@@ -47,6 +49,7 @@ import type {
   Link,
   Delete,
   Html,
+  Yaml,
 } from 'mdast';
 
 // Convert Lexical editor state to mdast tree
@@ -69,6 +72,10 @@ export function exportLexicalToMdast(editor: LexicalEditor): Root {
 }
 
 function convertLexicalNode(node: LexicalNode): Content[] {
+  if ($isFrontmatterNode(node)) {
+    return [convertFrontmatterNode(node)];
+  }
+
   if ($isParagraphNode(node)) {
     return [convertParagraphNode(node)];
   }
@@ -215,6 +222,10 @@ function convertCodeNode(node: ElementNode): Code {
 
 function convertHorizontalRuleNode(): ThematicBreak {
   return { type: 'thematicBreak' };
+}
+
+function convertFrontmatterNode(node: FrontmatterNode): Yaml {
+  return { type: 'yaml', value: node.getYaml() };
 }
 
 function convertTableNode(node: TableNode): Table {

@@ -1,5 +1,6 @@
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { gfmToMarkdown } from 'mdast-util-gfm';
+import { frontmatterToMarkdown } from 'mdast-util-frontmatter';
 import type { Root } from 'mdast';
 
 export interface StringifyOptions {
@@ -10,7 +11,8 @@ export interface StringifyOptions {
 
 export function stringifyMarkdown(root: Root, options: StringifyOptions = {}): string {
   const result = toMarkdown(root, {
-    extensions: [gfmToMarkdown()],
+    // Serializes a leading `yaml` node back to a `---\n…\n---` fence verbatim.
+    extensions: [frontmatterToMarkdown(['yaml']), gfmToMarkdown()],
     bullet: options.bulletStyle || '-',
     fence: options.fenceStyle || '`',
     listItemIndent: 'one',

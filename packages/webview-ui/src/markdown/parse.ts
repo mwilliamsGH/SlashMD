@@ -1,6 +1,8 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { gfm } from 'micromark-extension-gfm';
 import { gfmFromMarkdown } from 'mdast-util-gfm';
+import { frontmatter } from 'micromark-extension-frontmatter';
+import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import type { Root, Content, PhrasingContent } from 'mdast';
 
 export interface ParseOptions {
@@ -13,8 +15,10 @@ export interface ParseResult {
 
 export function parseMarkdown(text: string, _options: ParseOptions = {}): ParseResult {
   const root = fromMarkdown(text, {
-    extensions: [gfm()],
-    mdastExtensions: [gfmFromMarkdown()],
+    // `frontmatter(['yaml'])` makes a leading `---\n…\n---` block parse to a
+    // single `yaml` node instead of CommonMark's divider + setext-heading mangle.
+    extensions: [frontmatter(['yaml']), gfm()],
+    mdastExtensions: [frontmatterFromMarkdown(['yaml']), gfmFromMarkdown()],
   });
 
   return { root };

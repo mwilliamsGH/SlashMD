@@ -1457,3 +1457,75 @@ body {
   background: rgba(255, 153, 0, 0.6);
   outline: 2px solid rgba(255, 153, 0, 0.8);
 }
+
+/* Frontmatter (YAML) block */
+.frontmatter-block {
+  margin: 4px 0 16px;
+}
+
+.frontmatter-editor {
+  border: 1px solid var(--vscode-input-border, rgba(128, 128, 128, 0.3));
+  border-radius: 6px;
+  background: var(--vscode-code-bg, rgba(128, 128, 128, 0.08));
+  overflow: hidden;
+}
+
+.frontmatter-label {
+  font-family: var(--vscode-font-family);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  padding: 6px 12px 0;
+  user-select: none;
+}
+
+/* The highlight underlay and the textarea overlay must share identical text
+   metrics so the transparent textarea text lines up with the colored <pre>. */
+.frontmatter-code {
+  position: relative;
+}
+
+.frontmatter-highlight,
+.frontmatter-input {
+  margin: 0;
+  padding: 8px 12px 12px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+  tab-size: 2;
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.frontmatter-highlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--vscode-foreground);
+}
+
+.frontmatter-highlight code {
+  font: inherit;
+  background: none;
+  padding: 0;
+}
+
+.frontmatter-input {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--vscode-foreground);
+  resize: none;
+  outline: none;
+}
+
+.frontmatter-input::selection {
+  background: var(--vscode-selection);
+}

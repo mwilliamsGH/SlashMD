@@ -29,3 +29,6 @@ export type { SerializedImageNode } from './ImageNode';
 
 export { HorizontalRuleNode, $createHorizontalRuleNode, $isHorizontalRuleNode } from './HorizontalRuleNode';
 export type { SerializedHorizontalRuleNode } from './HorizontalRuleNode';
+
+export { FrontmatterNode, $createFrontmatterNode, $isFrontmatterNode } from './FrontmatterNode';
+export type { SerializedFrontmatterNode } from './FrontmatterNode';

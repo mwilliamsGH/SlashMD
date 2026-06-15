@@ -36,6 +36,7 @@ import {
   ToggleContentNode,
   ImageNode,
   HorizontalRuleNode,
+  FrontmatterNode,
 } from './nodes';
 import { importMarkdownToLexical } from '../mapper/mdastToLexical';
 import { exportLexicalToMdast } from '../mapper/lexicalToMdast';
@@ -140,6 +141,7 @@ const editorNodes = [
   ToggleContentNode,
   ImageNode,
   HorizontalRuleNode,
+  FrontmatterNode,
 ];
 
 // Plugin to enable syntax highlighting in code blocks
