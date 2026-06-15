@@ -7,7 +7,7 @@ import {
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
-import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createElement, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import Prism from 'prismjs';
 
@@ -131,15 +131,15 @@ function FrontmatterComponent({ yaml, nodeKey }: FrontmatterComponentProps): JSX
     [editor, nodeKey]
   );
 
-  // Keep the highlight underlay scroll-aligned with the textarea.
-  const handleScroll = useCallback(() => {
-    if (preRef.current && textareaRef.current) {
-      preRef.current.scrollTop = textareaRef.current.scrollTop;
-      preRef.current.scrollLeft = textareaRef.current.scrollLeft;
+  // Grow the textarea to fit its (soft-wrapped) content so it never scrolls;
+  // the absolutely-positioned highlight underlay follows the same height.
+  useLayoutEffect(() => {
+    const ta = textareaRef.current;
+    if (ta) {
+      ta.style.height = 'auto';
+      ta.style.height = `${ta.scrollHeight}px`;
     }
-  }, []);
-
-  const rows = Math.max(2, value.split('\n').length);
+  }, [value]);
 
   return (
     <div className="frontmatter-editor" contentEditable={false}>
@@ -156,11 +156,10 @@ function FrontmatterComponent({ yaml, nodeKey }: FrontmatterComponentProps): JSX
           className="frontmatter-input"
           value={value}
           onChange={handleChange}
-          onScroll={handleScroll}
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"
-          rows={rows}
+          rows={1}
           aria-label="YAML frontmatter"
         />
       </div>

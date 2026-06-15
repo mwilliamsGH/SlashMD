@@ -1495,9 +1495,11 @@ body {
   font-size: 0.9em;
   line-height: 1.5;
   tab-size: 2;
-  white-space: pre;
-  word-wrap: normal;
-  overflow: auto;
+  /* Soft-wrap long lines instead of scrolling horizontally. The underlay and
+     the textarea must wrap identically to stay aligned. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: hidden;
   box-sizing: border-box;
   border: 0;
 }
@@ -1528,4 +1530,34 @@ body {
 
 .frontmatter-input::selection {
   background: var(--vscode-selection);
+}
+
+/* Token colours: keys get an accent, scalar values keep the default
+   foreground, so the two read as distinct colours. */
+.frontmatter-highlight .token.key,
+.frontmatter-highlight .token.atrule {
+  color: var(--vscode-symbolIcon-propertyForeground, var(--vscode-textLink-foreground, #4ec9b0));
+  font-weight: 600;
+}
+
+.frontmatter-highlight .token.punctuation {
+  color: var(--vscode-descriptionForeground, rgba(128, 128, 128, 0.85));
+}
+
+.frontmatter-highlight .token.string {
+  color: var(--vscode-debugTokenExpression-string, #ce9178);
+}
+
+.frontmatter-highlight .token.number {
+  color: var(--vscode-debugTokenExpression-number, #b5cea8);
+}
+
+.frontmatter-highlight .token.boolean,
+.frontmatter-highlight .token.null {
+  color: var(--vscode-debugTokenExpression-boolean, #569cd6);
+}
+
+.frontmatter-highlight .token.comment {
+  color: var(--vscode-descriptionForeground, #6a9955);
+  font-style: italic;
 }
